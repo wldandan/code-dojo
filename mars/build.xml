@@ -1,0 +1,157 @@
+<?xml version="1.0"?>
+
+<project name="mars" basedir="." default="usage">
+    
+   	<property name="name" value="mars"/>
+		<property name="src.dir" value="src"/>
+		<property name="build.dir" value="bin"/>
+		<property name="docs.dir" value="docs"/>
+		<property name="lib.dir" value="lib"/>
+	    <property name="dist.dir" value="dist"/>
+	
+		<property name="testsrc.dir" value="test"/>
+		<property name="testbuild.dir" value=".testclasses"/>
+		<property name="testreports.dir" value="junit-reports"/>
+		<property name="testhtml.dir" value="${testreports.dir}/html"/>
+		
+		<property name="mars.root" value="../.."/>
+    
+    <path id="build-classpath">
+    	<fileset file="${lib.dir}/*.jar" />
+    </path>
+    
+    <path id="test-classpath">
+    	<fileset file="${lib.dir}/*.jar" />
+    </path>
+    
+    
+		<target name="usage">
+		
+			<echo message=""/>
+			<echo message="mars demo build file"/>
+			<echo message="------------------------------------------------------"/>
+			<echo message=""/>
+			<echo message="Available targets are:"/>
+			<echo message=""/>
+			<echo message="clean    --> Clean output dirs"/>
+			<echo message="build    --> Compile main Java sources"/>
+			<echo message="docs     --> Create complete Javadoc documentation"/>
+			<echo message="tests    --> Compile and run tests"/>
+			<echo message="all      --> Clean, build, docs, tests"/>
+			<echo message=""/>
+			
+		</target>
+	
+		
+		<target name="init">  
+		<!-- Check that junit.jar is in $ANT_HOME/lib or junit task fails -->
+        <available classname="junit.framework.TestCase" property="junit.present" classpath="${lib.dir}/junit-4.10.jar"/>
+        <fail unless="junit.present" message="Please copy junit.jar into ${env.ANT_HOME}/lib"/>
+		</target>	
+	
+	
+    <target name="clean" description="Clean output dirs (build, docs, testbuild, testreports, dist)">
+    
+    	<delete dir="${build.dir}"/>
+			<delete dir="${docs.dir}"/>
+			<delete dir="${testbuild.dir}"/>
+			<delete dir="${testreports.dir}"/>
+			<delete dir="${dist.dir}"/>
+			
+   	</target>
+
+
+		<target name="build" description="Compile main source tree java files into class files, generate jar files">
+		
+			<mkdir dir="${build.dir}"/>
+			<mkdir dir="${dist.dir}"/>
+
+			<javac destdir="${build.dir}" debug="true" source="1.6"
+				deprecation="false" optimize="false" failonerror="true">
+				<compilerarg value="-Xlint:unchecked"/>
+				<src path="${src.dir}"/>
+				
+				<classpath refid="build-classpath"/>
+			</javac>
+
+			<jar jarfile="${dist.dir}/${name}.jar" compress="true">
+				<fileset dir="${build.dir}">
+					<include name="**"/>
+				</fileset>
+			</jar>
+			
+		</target>
+		
+		
+		<target name="docs" description="Create complete Javadoc documentation">
+
+			<delete dir="${docs.dir}"/>
+
+			<mkdir dir="${docs.dir}"/>
+
+			<javadoc sourcepath="${src.dir}" destdir="${docs.dir}" windowtitle="mars"
+				author="true" version="true" use="true" packagenames="*">
+				<doctitle><![CDATA[<h1>mars</h1>]]></doctitle>
+				<bottom><![CDATA[<i>leiw, 2012.2</i>]]></bottom>
+			
+				<classpath refid="build-classpath"/>
+			</javadoc>
+
+		</target>
+	
+	
+		<target name="dist" depends="build,docs"/>
+		
+		
+		<target name="tests" depends="init,build" description="Run all tests">
+
+			<delete dir="${testbuild.dir}"/>
+			<mkdir dir="${testbuild.dir}"/>
+		
+			<delete dir="${testreports.dir}"/>
+			<mkdir dir="${testreports.dir}"/>
+			
+			<delete dir="${testhtml.dir}"/>
+			<mkdir dir="${testhtml.dir}"/>
+
+			<javac srcdir="${testsrc.dir}" destdir="${testbuild.dir}" debug="true" deprecation="true">
+				<classpath path="${build.dir}"/>
+				<classpath refid="build-classpath"/>
+				<classpath path="${lib.dir}/junit-4.10.jar"/>
+				<classpath refid="test-classpath"/>
+			</javac>
+
+			<junit printsummary="true" fork="yes">
+				<formatter type="xml"/>
+				<!--
+				<test name="org.mars.TestAll" todir="${testreports.dir}"/>
+				-->
+				<batchtest todir="${testreports.dir}">
+					<fileset dir="${testsrc.dir}">
+						<include name="**/*Test.java"/>
+						<exclude name="**/Test*All.java"/>
+						<exclude name="**/Base*Test.java"/>
+					</fileset>
+				</batchtest>
+				
+				
+				<classpath path="${build.dir}"/>
+				<classpath path="${src.dir}"/>
+				<classpath path="${testbuild.dir}"/>
+				<classpath path="${testsrc.dir}"/>
+				<classpath refid="build-classpath"/>
+				<classpath refid="test-classpath"/>
+				
+		</junit>
+
+		<junitreport todir="${testhtml.dir}">
+			<fileset dir="${testreports.dir}">
+				<include name="TEST-*.xml"/>
+			</fileset>
+			<report format="frames" todir="${testhtml.dir}"/>
+		</junitreport>
+
+	</target>
+	<target name="all" depends="clean,build,docs,tests,dist" description="Clean,build,docs,tests,dist"/>
+	
+</project>

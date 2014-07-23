@@ -1,0 +1,2 @@
+"%JAVA_HOME%/bin/java" -cp dist/mars.jar com.thoughtworks.mars.Client sample.txt
+pause

@@ -1,0 +1,69 @@
+=========================================
+== mars demo ==
+=========================================
+
+@author leiw
+@date 2012.2.19
+
+1.目录介绍
+src----源代码文件目录
+test----测试代码文件目录
+lib----编译/构建所依赖的Jar文件目录
+dist----程序发布目录
+bin----源代码编译后的class目录
+docs----Javadoc目录	
+junit-reports---Junit运行的测试结果目录		
+
+run.bat----运行程序并输出结果到命令行终端
+build.xml----Ant的build文件
+sample.txt----测试数据文件
+
+2. 编译与运行  
+  1)请将"run.bat.rename"改名为"run.bat"
+  2)运行"run.bat"，它将使用sample.txt作为输入，并输出结果到控制台。
+  另外，也可以使用如下命令，将sample.txt作为输入, 并保存运行结果到当前目录下的result.txt中
+      "%JAVA_HOME%/bin/java" -cp dist/mars.jar com.thoughtworks.mars.Client sample.txt result.txt
+
+3. 设计思路
+ 	抽象出Rover的方向:
+ 		1) 东
+ 		2) 南
+ 		3) 西
+ 		4) 北
+	
+	抽象出Rover的行为:
+ 		1) 左转
+ 		2) 右转
+ 		3) 前进
+		
+	使用Navigator类，解析用户输入，控制Rover。
+	
+4. 代码(包)结构
+└─com
+	└─thoughtworks
+		└─mars
+			└─Client.java               客户端
+			└─Navigator.java            解析输入并控制Rover
+			└─OrientationFactory.java   用于创建不同方向的工厂
+			└─NavigatorException.java   异常定义
+			└─NavigatorHelper.java      帮助类 
+			└─model
+				├─Plateau.java			   
+				├─Point.java			
+				├─Rover.java
+				├─Behavioural        封装Rover的行为       
+					└─LeftTurn.java
+					└─RightTurn.java
+					└─MoveForward.java
+				└─orientation        封装Rover的方向
+					└─East.java
+					└─West.java
+					└─South.java
+					└─North.java
+   
+  
+5. 开发环境  
+   Eclipse3.6
+   JDK1.6
+   Apache.ant1.8.2
+   Junit4.10
