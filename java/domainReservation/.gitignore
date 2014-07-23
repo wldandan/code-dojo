@@ -1,0 +1,5 @@
+.idea/*
+domainReservation.*
+build
+.gradle/*
+out/
