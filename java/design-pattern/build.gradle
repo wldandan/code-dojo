@@ -1,0 +1,16 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+
+repositories {
+    mavenCentral()
+}
+
+ext.JUNIT = "junit:junit:4.10"
+ext.MOCKITO = "org.mockito:mockito-all:1.9.5"
+ext.HAMCREST = "org.hamcrest:hamcrest-all:1.1"
+
+
+dependencies {
+    testCompile(JUNIT, MOCKITO, HAMCREST)
+}
+
