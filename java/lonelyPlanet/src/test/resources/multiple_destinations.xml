@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<destinations>
+    <destination atlas_id="355064" asset_id="22614-4" title="Africa" title-ascii="Africa">
+        <history>
+            <history>
+                <history>
+                    <![CDATA[Africa's history]]>
+                </history>
+                <overview>
+                    <![CDATA[African history overview]]>
+                </overview>
+            </history>
+        </history>
+        <introductory>
+            <introduction>
+                <overview>
+                    <![CDATA[African introduction overview]]>
+                </overview>
+            </introduction>
+        </introductory>
+        <practical_information>
+            <health_and_safety>
+                <before_you_go>
+                    <![CDATA[practical information]]>
+                </before_you_go>
+            </health_and_safety>
+        </practical_information>
+        <transport>
+            <getting_around>
+                <air>
+                    <![CDATA[transport information]]>
+                </air>
+            </getting_around>
+        </transport>
+    </destination>
+ </destinations>

@@ -1,0 +1,45 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'application'
+
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+mainClassName = "com.wl.dandan.CLI"
+
+ext.JUNIT = "junit:junit:4.10"
+ext.MOCKITO = "org.mockito:mockito-all:1.9.5"
+ext.POWER_MOCK = 'org.powermock:powermock:1.4.12'
+
+ext.HAMCREST = "org.hamcrest:hamcrest-all:1.1"
+
+
+
+ext.COMMONS_COLLECTIONS = "commons-collections:commons-collections:3.0"
+ext.COMMONS_CLI = "commons-cli:commons-cli:1.2"
+ext.GUAVA = "com.google.guava:guava:11.0.2"
+ext.VELOCITY = 'org.apache.velocity:velocity:1.7'
+
+
+dependencies {
+    compile(COMMONS_COLLECTIONS, COMMONS_CLI, VELOCITY,GUAVA)
+    testCompile(JUNIT, MOCKITO, HAMCREST, POWER_MOCK)
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Page Generator', 'Implementation-Version': version
+        attributes 'Main-Class': 'com.wl.dandan.CLI'
+    }
+    from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    from sourceSets.main.output
+
+    copy {
+        from 'build/libs'
+        into 'release/libs'
+        include '**/*.jar'
+    }
+}
