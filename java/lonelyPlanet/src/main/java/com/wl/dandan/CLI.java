@@ -8,9 +8,6 @@ public class CLI {
 
 
     public static void main(String[] args){
-
-        long start = System.currentTimeMillis();
-
         RequestParameter parameter = null;
         try {
             parameter = parseOptions(args);
@@ -34,8 +31,6 @@ public class CLI {
             System.exit(1);
         }
 
-        long duration = System.currentTimeMillis() - start;
-        System.out.println("it takes" + duration + "s");
     }
 
     private static Options buildOptions(){
