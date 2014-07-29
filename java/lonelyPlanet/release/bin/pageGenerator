@@ -1,0 +1,6 @@
+#! /bin/bash
+
+DIR=`pwd`
+ARGS=$@
+
+bash -c "java -Dtemplate.dir=$DIR/template -jar $DIR/libs/lonelyPlanet-1.0.jar $ARGS"
